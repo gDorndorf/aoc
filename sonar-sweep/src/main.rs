@@ -4,7 +4,7 @@ use std::io::BufRead;
 
 fn main() {
     println!("sonar sweep!");
-    let file = File::open("../input.txt").expect("file not found");
+    let file = File::open("input.txt").expect("file not found");
     let reader = BufReader::new(file);
 
     let lines: Vec<i64> = reader.lines()
