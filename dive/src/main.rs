@@ -12,16 +12,20 @@ fn main() {
     
     let mut hor_p = 0;
     let mut depth = 0;
-    
+    let mut aim = 0;
+
     for line in lines {
         let command: Vec<String> = line.split(' ').
             map(|x| x.to_string())
             .collect();
         let amount: i64 = command[1].parse().unwrap();
         match command[0].as_str() {
-            "forward" => hor_p += amount,
-            "down" => depth += amount,
-            "up" => depth -= amount,
+            "forward" => {
+                hor_p += amount;
+                depth += aim * amount;
+            },
+            "down" => aim += amount,
+            "up" => aim -= amount,
             _ => panic!("Command {} is not understood.", command[0].as_str()),
         };
     }
