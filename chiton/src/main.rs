@@ -31,14 +31,33 @@ fn main() {
     let file = File::open("input.txt").expect("file not found");
     let reader = BufReader::new(file);
 
-    let cave: Vec<Vec<i64>> = reader.lines()
+    let mut cave: Vec<Vec<i64>> = reader.lines()
         .map(|x| x.unwrap().chars()
                 .map(|y| y.to_digit(10).unwrap() as i64).collect())
         .collect();
 
     
+    // part 2 
+    for i in 1..5 {
+        for line in 0..cave[0].len() {
+            cave.push(
+                cave[line].iter().map(|x| (*x-1 + i) % 9 + 1)
+                    .collect(),
+            );
+        }
+    }
+    for line in &mut cave {
+        let l = line.len();
+        for i in 1..5 {
+            for j in 0..l {
+                line.push((line[j] - 1 + i) % 9 +1);
+            }
+        }
+    }
+    // eo p2
+
     let d = cave.len();
-    
+    println!("cave len: {}", d);
 
     let mut risks: Vec<Vec<i64>> = vec![vec![i64::MAX; d]; d];
     let mut heap = BinaryHeap::new();
@@ -54,7 +73,7 @@ fn main() {
             if (    p.0 != -1 || i != 0) 
                 && (p.1 != -1 || j != 0) 
                 && i+p.0 < d as i32  
-                && j+p.1< d as i32{
+                && j+p.1 < d as i32{
                 let neighbor = Node {i: i + p.0, j: j + p.1 , risk: risk + cave[(i + p.0) as usize][(j+p.1) as usize]};
             
                 if neighbor.risk < risks[neighbor.i as usize][neighbor.j as usize] {
